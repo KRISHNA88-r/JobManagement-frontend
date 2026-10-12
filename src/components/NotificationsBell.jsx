@@ -1,0 +1,34 @@
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import api from "../api.js";
+
+export default function NotificationBell() {
+  const [count, setCount] = useState(0);
+  const location = useLocation();
+
+  useEffect(() => {
+    let active = true;
+    const load = () =>
+      api
+        .get("/notifications/unread-count")
+        .then((res) => active && setCount(res.data.count))
+        .catch(() => {});
+    load();
+    const timer = setInterval(load, 20000);
+    return () => {
+      active = false;
+      clearInterval(timer);
+    };
+  }, [location.pathname]);
+
+  return (
+    <Link to="/notifications" className="bell" title="Notifications" aria-label="Notifications">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+        <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+      </svg>
+      {count > 0 && <span className="bell-count">{count > 9 ? "9+" : count}</span>}
+    </Link>
+  );
+}
