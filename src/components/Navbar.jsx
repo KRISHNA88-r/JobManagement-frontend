@@ -18,7 +18,7 @@ export default function Navbar() {
 
         <div className="nav-links">
           <NavLink to="/jobs">Jobs</NavLink>
-          {user && <NavLink to="/dashboard">Dashboard</NavLink>}
+          {user && <NavLink to="/dashboard">Dashboard</NavLink>}          {user && <NotificationBell />}          {user && <NotificationBell />}
           {user?.role === "JOB_SEEKER" && <NavLink to="/my-applications">My applications</NavLink>}
           {user?.role === "RECRUITER" && <NavLink to="/recruiter/jobs">My postings</NavLink>}
           {user && <NavLink to="/profile">Profile</NavLink>}
